@@ -35,7 +35,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, requireRole }) => {
       <div className="min-h-screen flex flex-col">
         <NavBar />
         <div className="main-container flex items-center justify-center flex-1">
-          <div className="text-center">
+          <div className="text-center p-8 bg-white rounded-lg border border-gray-200 shadow-sm">
             <h1 className="text-2xl font-bold mb-2">Access Denied</h1>
             <p className="text-muted-foreground">
               You don't have permission to access this area.

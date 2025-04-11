@@ -20,11 +20,11 @@ const GuestListCard: React.FC<GuestListCardProps> = ({ guestList }) => {
   const { user } = useAuth();
 
   return (
-    <Card className="h-full">
+    <Card className="h-full rounded-lg">
       <CardHeader>
         <div className="flex justify-between items-start">
           <CardTitle className="text-lg">{guestList.title}</CardTitle>
-          <Badge variant={arrivedCount > 0 ? "default" : "secondary"}>
+          <Badge variant={arrivedCount > 0 ? "default" : "secondary"} className="rounded-full">
             {arrivedCount}/{totalGuests} Arrived
           </Badge>
         </div>
@@ -58,13 +58,13 @@ const GuestListCard: React.FC<GuestListCardProps> = ({ guestList }) => {
       <CardFooter>
         <div className="flex space-x-2 w-full">
           {user?.role === "venue" && (
-            <Button asChild className="flex-1">
+            <Button asChild className="flex-1 rounded-lg">
               <Link to={`/check-in/${guestList.id}`}>
                 Check In
               </Link>
             </Button>
           )}
-          <Button asChild variant={user?.role === "venue" ? "outline" : "default"} className="flex-1">
+          <Button asChild variant={user?.role === "venue" ? "outline" : "default"} className="flex-1 rounded-lg">
             <Link to={`/guest-lists/${guestList.id}`}>
               View Details
             </Link>

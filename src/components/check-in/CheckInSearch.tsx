@@ -29,7 +29,7 @@ const GenderBadge: React.FC<{ gender?: GenderType }> = ({ gender }) => {
   };
   
   return (
-    <Badge variant="outline" className={`ml-2 ${classes[gender]}`}>
+    <Badge variant="outline" className={`ml-2 ${classes[gender]} rounded-full`}>
       {gender.charAt(0).toUpperCase()}
     </Badge>
   );
@@ -98,7 +98,7 @@ const CheckInSearch: React.FC<CheckInSearchProps> = ({ selectedDate }) => {
           placeholder="Search for a guest by name..."
           value={searchTerm}
           onChange={handleSearchChange}
-          className="pl-10 py-6 text-lg border-gray-200"
+          className="pl-10 py-6 text-lg border-gray-200 rounded-lg"
         />
       </div>
       
@@ -107,8 +107,8 @@ const CheckInSearch: React.FC<CheckInSearchProps> = ({ selectedDate }) => {
           displayedGuests.map((guest) => {
             const guestList = getGuestListById(guest.guestListId);
             return (
-              <Card key={guest.id} className="overflow-hidden bg-white border border-gray-200">
-                <CardHeader className="bg-gray-50 py-3">
+              <Card key={guest.id} className="overflow-hidden bg-white border border-gray-200 rounded-lg">
+                <CardHeader className="bg-gray-50 py-3 rounded-t-lg">
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
                       <CardTitle className="text-base md:text-lg flex items-center text-gray-800">
@@ -117,7 +117,7 @@ const CheckInSearch: React.FC<CheckInSearchProps> = ({ selectedDate }) => {
                       </CardTitle>
                     </div>
                     <Badge variant={guest.arrived ? "default" : "outline"} 
-                      className={guest.arrived ? "bg-green-100 text-green-800 hover:bg-green-200" : ""}>
+                      className={`${guest.arrived ? "bg-green-100 text-green-800 hover:bg-green-200" : ""} rounded-full`}>
                       {guest.arrived ? "Arrived" : "Not Arrived"}
                     </Badge>
                   </div>
@@ -146,7 +146,7 @@ const CheckInSearch: React.FC<CheckInSearchProps> = ({ selectedDate }) => {
                   
                   {!guest.arrived && (
                     <Button
-                      className="w-full mt-3 bg-gray-800 hover:bg-gray-700 text-white"
+                      className="w-full mt-3 bg-gray-800 hover:bg-gray-700 text-white rounded-lg"
                       onClick={() => checkInGuest(guest)}
                     >
                       <CheckCircle className="mr-2 h-4 w-4" />
@@ -158,11 +158,11 @@ const CheckInSearch: React.FC<CheckInSearchProps> = ({ selectedDate }) => {
             );
           })
         ) : searchTerm.length > 1 ? (
-          <div className="text-center py-10">
+          <div className="text-center py-10 bg-white rounded-lg border border-gray-200">
             <p className="text-gray-500">No guests found with that name.</p>
           </div>
         ) : (
-          <div className="text-center py-10">
+          <div className="text-center py-10 bg-white rounded-lg border border-gray-200">
             <p className="text-gray-500">No guests available for the selected date.</p>
           </div>
         )}
@@ -173,7 +173,7 @@ const CheckInSearch: React.FC<CheckInSearchProps> = ({ selectedDate }) => {
               <PaginationItem>
                 <PaginationPrevious 
                   onClick={() => handlePageChange(currentPage - 1)}
-                  className={currentPage === 1 ? "pointer-events-none opacity-50" : ""} 
+                  className={currentPage === 1 ? "pointer-events-none opacity-50 rounded-lg" : "rounded-lg"} 
                 />
               </PaginationItem>
 
@@ -190,6 +190,7 @@ const CheckInSearch: React.FC<CheckInSearchProps> = ({ selectedDate }) => {
                       <PaginationLink 
                         isActive={pageNumber === currentPage}
                         onClick={() => handlePageChange(pageNumber)}
+                        className="rounded-lg"
                       >
                         {pageNumber}
                       </PaginationLink>
@@ -211,7 +212,7 @@ const CheckInSearch: React.FC<CheckInSearchProps> = ({ selectedDate }) => {
               <PaginationItem>
                 <PaginationNext 
                   onClick={() => handlePageChange(currentPage + 1)}
-                  className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""} 
+                  className={currentPage === totalPages ? "pointer-events-none opacity-50 rounded-lg" : "rounded-lg"} 
                 />
               </PaginationItem>
             </PaginationContent>
