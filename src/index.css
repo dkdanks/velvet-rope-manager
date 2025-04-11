@@ -5,32 +5,32 @@
 
 @layer base {
   :root {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
 
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
 
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 270 80% 70%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 260 40% 60%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 10%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 300 76.3% 65%;
+    --accent: 270 80% 70%;
     --accent-foreground: 0 0% 98%;
 
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
     --ring: 240 4.9% 83.9%;
   }
 
@@ -40,6 +40,7 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
 }
 
@@ -49,7 +50,7 @@
   }
 
   .navbar {
-    @apply fixed top-0 w-full bg-card border-b z-50;
+    @apply fixed top-0 w-full bg-white border-b z-50;
   }
 
   .main-container {
@@ -57,38 +58,38 @@
   }
 
   .auth-form {
-    @apply space-y-4 bg-card p-6 rounded-lg border max-w-md w-full mx-auto shadow-lg;
+    @apply space-y-4 bg-card p-6 rounded-lg border max-w-md w-full mx-auto shadow-sm;
   }
 
   .guest-list-card {
-    @apply bg-card rounded-lg border p-4 hover:bg-muted/20 transition-colors;
+    @apply bg-white rounded-lg border p-4 hover:bg-gray-50 transition-colors shadow-sm;
   }
 
   .guest-row {
-    @apply py-2 px-4 hover:bg-secondary rounded-md flex items-center justify-between transition-colors;
+    @apply py-2 px-4 hover:bg-gray-50 rounded-md flex items-center justify-between transition-colors;
   }
 
   .checkin-button {
-    @apply px-3 py-1 rounded-full text-sm font-medium;
+    @apply px-3 py-1 rounded-md text-sm font-medium;
   }
   
   .gender-tag {
-    @apply text-xs rounded-full px-2 py-0.5 font-medium;
+    @apply inline-flex ml-2 items-center justify-center rounded-full px-2 py-0.5 text-xs font-semibold;
   }
   
   .gender-tag-male {
-    @apply bg-blue-700/30 text-blue-200;
+    @apply bg-blue-100 text-blue-800;
   }
   
   .gender-tag-female {
-    @apply bg-pink-700/30 text-pink-200;
+    @apply bg-pink-100 text-pink-800;
   }
   
   .gender-tag-neutral {
-    @apply bg-purple-700/30 text-purple-200;
+    @apply bg-purple-100 text-purple-800;
   }
 
   .stats-card {
-    @apply bg-card p-4 rounded-lg border;
+    @apply bg-white p-4 rounded-lg border shadow-sm;
   }
 }

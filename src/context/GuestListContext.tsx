@@ -13,9 +13,10 @@ interface GuestListContextType {
   getGuestListById: (id: string) => GuestList | undefined;
   getGuestListsByDate: (date: Date) => GuestList[];
   getGuestListsByPromoter: (promoterId: string) => GuestList[];
-  createGuestList: (title: string, eventDate: Date, guestText: string) => void;
+  createGuestList: (title: string, eventDate: Date, guestText: string, promoterId?: string) => void;
   updateGuest: (guestId: string, guestListId: string, updates: Partial<Guest>) => void;
   searchGuests: (query: string, date?: Date) => Guest[];
+  getPaginatedGuests: (date?: Date, page?: number, limit?: number) => {guests: Guest[], total: number};
 }
 
 const GuestListContext = createContext<GuestListContextType | undefined>(undefined);
@@ -45,19 +46,23 @@ export const GuestListProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return guestLists.filter(list => list.promoterId === promoterId);
   };
 
-  const createGuestList = (title: string, eventDate: Date, guestText: string) => {
+  const createGuestList = (title: string, eventDate: Date, guestText: string, promoterId?: string) => {
     if (!user) return;
 
     const newId = `gl${Date.now()}`;
     const guests = parseGuestList(guestText, newId);
+    
+    // Use the provided promoterId or default to the current user's id
+    const actualPromoterId = promoterId === "venue" ? "venue" : (promoterId || user.id);
+    const promoterName = actualPromoterId === "venue" ? "Venue Manager" : user.name;
     
     const newGuestList: GuestList = {
       id: newId,
       title,
       eventDate,
       createdAt: new Date(),
-      promoterId: user.id,
-      promoterName: user.name,
+      promoterId: actualPromoterId,
+      promoterName: promoterName,
       venueId: '1', // In a real app, this would be the actual venue ID
       guests,
     };
@@ -105,6 +110,40 @@ export const GuestListProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     );
   };
 
+  // New function to get paginated guests
+  const getPaginatedGuests = (date?: Date, page = 1, limit = 10): {guests: Guest[], total: number} => {
+    let allGuests: Guest[] = [];
+    
+    // Filter by date if provided
+    let listsToSearch = guestLists;
+    if (date) {
+      const dateStr = date.toISOString().split('T')[0];
+      listsToSearch = listsToSearch.filter(list => 
+        list.eventDate.toISOString().split('T')[0] === dateStr
+      );
+    }
+    
+    // Collect all guests from the filtered lists
+    allGuests = listsToSearch.flatMap(list => 
+      list.guests.map(guest => ({
+        ...guest,
+        guestListId: list.id,
+      }))
+    );
+    
+    // Sort guests alphabetically by name
+    allGuests.sort((a, b) => a.name.localeCompare(b.name));
+    
+    // Calculate pagination
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    
+    return {
+      guests: allGuests.slice(startIndex, endIndex),
+      total: allGuests.length
+    };
+  };
+
   return (
     <GuestListContext.Provider value={{
       guestLists,
@@ -114,6 +153,7 @@ export const GuestListProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       createGuestList,
       updateGuest,
       searchGuests,
+      getPaginatedGuests,
     }}>
       {children}
     </GuestListContext.Provider>

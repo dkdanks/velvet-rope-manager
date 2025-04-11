@@ -11,7 +11,7 @@ const GuestListDetailPage: React.FC = () => {
     return (
       <AppLayout>
         <div className="text-center">
-          <h1 className="text-2xl font-bold">Guest List Not Found</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Guest List Not Found</h1>
         </div>
       </AppLayout>
     );
@@ -20,7 +20,7 @@ const GuestListDetailPage: React.FC = () => {
   return (
     <AppLayout>
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Guest List Details</h1>
+        <h1 className="text-3xl font-bold mb-6 text-gray-800">Guest List Details</h1>
         <GuestListDetail guestListId={id} />
       </div>
     </AppLayout>
