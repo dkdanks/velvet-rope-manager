@@ -32,25 +32,29 @@ const PromotersPage: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {promoters.map((promoter) => (
-            <Card key={promoter.id}>
-              <CardHeader className="pb-2">
-                <CardTitle>{promoter.name}</CardTitle>
-                <CardDescription>{promoter.email}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center">
-                    <Users className="mr-2 h-5 w-5 text-muted-foreground" />
-                    <span className="text-muted-foreground">Promoter</span>
-                  </div>
-                  <Button variant="ghost" asChild>
-                    <Link to={`/guest-lists?promoter=${promoter.id}`}>
+            <Link 
+              key={promoter.id} 
+              to={`/guest-lists?promoter=${promoter.id}`} 
+              className="block transition-all duration-200 hover:transform hover:scale-[1.02]"
+            >
+              <Card className="h-full rounded-lg transition-colors duration-200 hover:bg-nightclub-purple-light/10 cursor-pointer">
+                <CardHeader className="pb-2">
+                  <CardTitle>{promoter.name}</CardTitle>
+                  <CardDescription>{promoter.email}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center">
+                      <Users className="mr-2 h-5 w-5 text-muted-foreground" />
+                      <span className="text-muted-foreground">Promoter</span>
+                    </div>
+                    <span className="text-sm font-medium text-nightclub-purple">
                       View Guest Lists
-                    </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                    </span>
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       </div>
