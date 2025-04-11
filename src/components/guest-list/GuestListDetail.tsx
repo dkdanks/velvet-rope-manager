@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useGuestLists } from "@/context/GuestListContext";
+import { useAuth } from "@/context/AuthContext";
 import { GuestList, Guest, GenderType } from "@/types";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";
@@ -39,6 +40,7 @@ const GenderBadge: React.FC<{ gender?: GenderType }> = ({ gender }) => {
 
 const GuestListDetail: React.FC<GuestListDetailProps> = ({ guestListId }) => {
   const { getGuestListById, updateGuest } = useGuestLists();
+  const { user } = useAuth();
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<"name" | "arrived">("name");
   const guestList = getGuestListById(guestListId);
@@ -54,6 +56,9 @@ const GuestListDetail: React.FC<GuestListDetailProps> = ({ guestListId }) => {
   }
   
   const toggleGuestArrival = (guest: Guest) => {
+    // Only venue staff can check in guests
+    if (user?.role !== "venue") return;
+    
     const now = new Date();
     updateGuest(guest.id, guestListId, {
       arrived: !guest.arrived,
@@ -81,6 +86,9 @@ const GuestListDetail: React.FC<GuestListDetailProps> = ({ guestListId }) => {
   const currentGuests = sortedGuests.slice(indexOfFirstGuest, indexOfLastGuest);
   
   const arrivedCount = filteredGuests.filter(g => g.arrived).length;
+  
+  const isPromoter = user?.role === "promoter";
+  const isVenue = user?.role === "venue";
 
   return (
     <div className="space-y-4">
@@ -145,16 +153,24 @@ const GuestListDetail: React.FC<GuestListDetailProps> = ({ guestListId }) => {
                     </span>
                     <GenderBadge gender={guest.gender} />
                   </div>
-                  <Button
-                    size="sm"
-                    variant={guest.arrived ? "default" : "outline"}
-                    onClick={() => toggleGuestArrival(guest)}
-                    className={guest.arrived 
-                      ? "bg-green-600 hover:bg-green-700 focus:ring-green-500" 
-                      : "border-gray-200 text-gray-600 hover:bg-gray-50"}
-                  >
-                    {guest.arrived ? "Arrived" : "Check In"}
-                  </Button>
+                  {isVenue && (
+                    <Button
+                      size="sm"
+                      variant={guest.arrived ? "default" : "outline"}
+                      onClick={() => toggleGuestArrival(guest)}
+                      className={guest.arrived 
+                        ? "bg-green-600 hover:bg-green-700 focus:ring-green-500" 
+                        : "border-gray-200 text-gray-600 hover:bg-gray-50"}
+                    >
+                      {guest.arrived ? "Arrived" : "Check In"}
+                    </Button>
+                  )}
+                  {isPromoter && (
+                    <Badge variant={guest.arrived ? "default" : "outline"} 
+                      className={guest.arrived ? "bg-green-100 text-green-800" : ""}>
+                      {guest.arrived ? "Arrived" : "Not Arrived"}
+                    </Badge>
+                  )}
                 </div>
               ))
             ) : (

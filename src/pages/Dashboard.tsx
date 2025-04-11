@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import { useGuestLists } from "@/context/GuestListContext";
+import { useAuth } from "@/context/AuthContext";
 import AppLayout from "@/components/layouts/AppLayout";
 import GuestListCard from "@/components/guest-list/GuestListCard";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 const Dashboard: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const { getGuestListsByDate } = useGuestLists();
+  const { user } = useAuth();
   const navigate = useNavigate();
   
   const guestLists = getGuestListsByDate(selectedDate);

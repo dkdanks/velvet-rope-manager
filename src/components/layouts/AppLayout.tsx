@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import NavBar from "./NavBar";
 
@@ -11,6 +11,7 @@ interface AppLayoutProps {
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children, requireRole }) => {
   const { user, isLoading } = useAuth();
+  const location = useLocation();
 
   if (isLoading) {
     return (
@@ -22,6 +23,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, requireRole }) => {
 
   if (!user) {
     return <Navigate to="/login" replace />;
+  }
+
+  // Check if the current path is check-in and user is a promoter
+  if (user.role === "promoter" && location.pathname.startsWith("/check-in")) {
+    return <Navigate to="/dashboard" replace />;
   }
 
   if (requireRole && user.role !== requireRole) {

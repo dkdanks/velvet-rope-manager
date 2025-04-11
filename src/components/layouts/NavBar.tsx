@@ -61,16 +61,18 @@ const NavBar: React.FC = () => {
           >
             Guest Lists
           </Link>
-          <Link
-            to="/check-in"
-            className={`${
-              location.pathname.startsWith("/check-in")
-                ? "text-primary"
-                : "text-muted-foreground hover:text-primary"
-            } transition-colors`}
-          >
-            Check-in
-          </Link>
+          {user.role === "venue" && (
+            <Link
+              to="/check-in"
+              className={`${
+                location.pathname.startsWith("/check-in")
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-primary"
+              } transition-colors`}
+            >
+              Check-in
+            </Link>
+          )}
           {user.role === "venue" && (
             <Link
               to="/performance"
@@ -112,11 +114,13 @@ const NavBar: React.FC = () => {
                   <Users className="mr-2 h-4 w-4" /> Guest Lists
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/check-in" className="w-full flex items-center">
-                  <UserCircle className="mr-2 h-4 w-4" /> Check-in
-                </Link>
-              </DropdownMenuItem>
+              {user.role === "venue" && (
+                <DropdownMenuItem asChild>
+                  <Link to="/check-in" className="w-full flex items-center">
+                    <UserCircle className="mr-2 h-4 w-4" /> Check-in
+                  </Link>
+                </DropdownMenuItem>
+              )}
               {user.role === "venue" && (
                 <DropdownMenuItem asChild>
                   <Link to="/performance" className="w-full flex items-center">

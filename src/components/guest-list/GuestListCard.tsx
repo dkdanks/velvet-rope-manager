@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { Users, Calendar, User } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 interface GuestListCardProps {
   guestList: GuestList;
@@ -16,6 +17,7 @@ const GuestListCard: React.FC<GuestListCardProps> = ({ guestList }) => {
   const arrivedCount = guestList.guests.filter(g => g.arrived).length;
   const totalGuests = guestList.guests.length;
   const arrivalPercentage = totalGuests > 0 ? Math.round((arrivedCount / totalGuests) * 100) : 0;
+  const { user } = useAuth();
 
   return (
     <Card className="h-full">
@@ -55,12 +57,14 @@ const GuestListCard: React.FC<GuestListCardProps> = ({ guestList }) => {
       
       <CardFooter>
         <div className="flex space-x-2 w-full">
-          <Button asChild className="flex-1">
-            <Link to={`/check-in/${guestList.id}`}>
-              Check In
-            </Link>
-          </Button>
-          <Button asChild variant="outline" className="flex-1">
+          {user?.role === "venue" && (
+            <Button asChild className="flex-1">
+              <Link to={`/check-in/${guestList.id}`}>
+                Check In
+              </Link>
+            </Button>
+          )}
+          <Button asChild variant={user?.role === "venue" ? "outline" : "default"} className="flex-1">
             <Link to={`/guest-lists/${guestList.id}`}>
               View Details
             </Link>
